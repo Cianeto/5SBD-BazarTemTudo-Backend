@@ -1,0 +1,12 @@
+CREATE VIEW tb_order_pending_queue AS
+SELECT *
+FROM tb_order
+WHERE status = 'PENDING'
+ORDER BY price_sum DESC;
+
+CREATE VIEW tb_purchase_pending_queue AS
+SELECT pu.*, ord.price_sum
+FROM tb_purchase pu
+JOIN tb_order ord ON pu.order_id = ord.id
+WHERE ord.status = 'PENDING'
+ORDER BY ord.price_sum DESC;
