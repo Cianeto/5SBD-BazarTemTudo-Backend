@@ -33,7 +33,6 @@ public class Item {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false)
-    @ColumnDefault("0")
+    @Column(nullable = false, columnDefinition = "int DEFAULT 0")
     private Integer inventory = 0;
 }
