@@ -22,73 +22,73 @@ import java.math.BigDecimal;
 public class Load {
 
     @Id
-    @Column(name = "order-id", nullable = false, length = 30)
+    @Column(name = "order_id", nullable = false, length = 30)
     private String orderId;
 
-    @Column(name = "order-item-id", nullable = false, length = 30)
+    @Column(name = "order_item_id", nullable = false, length = 30)
     private String orderItemId;
 
-    @Column(name = "purchase-date", nullable = false, length = 10)
+    @Column(name = "purchase_date", nullable = false, length = 10)
     private String purchaseDate;
 
-    @Column(name = "payments-date", nullable = false, length = 10)
+    @Column(name = "payments_date", nullable = false, length = 10)
     private String paymentsDate;
 
-    @Column(name = "buyer-email", nullable = false, length = 255)
+    @Column(name = "buyer_email", nullable = false, length = 255)
     private String buyerEmail;
 
-    @Column(name = "buyer-name", nullable = false, length = 255)
+    @Column(name = "buyer_name", nullable = false, length = 255)
     private String buyerName;
 
     @Column(name = "cpf", nullable = false, length = 14)
     private String cpf;
 
-    @Column(name = "buyer-phone-number", length = 18)
+    @Column(name = "buyer_phone_number", length = 18)
     private String buyerPhoneNumber;
 
     @Column(name = "sku", nullable = false, length = 32)
     private String sku;
 
-    @Column(name = "product-name", nullable = false, length = 255)
+    @Column(name = "product_name", nullable = false, length = 255)
     private String productName;
 
-    @Column(name = "quantity-purchased", nullable = false)
+    @Column(name = "quantity_purchased", nullable = false)
     private Integer quantityPurchased;
 
     @Column(name = "currency", nullable = false, length = 3)
     private String currency;
 
-    @Column(name = "item-price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "item_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal itemPrice;
 
-    @Column(name = "ship-service-level", nullable = false, length = 20)
+    @Column(name = "ship_service_level", nullable = false, length = 20)
     private String shipServiceLevel;
 
-    @Column(name = "recipient-name", nullable = false, length = 255)
+    @Column(name = "recipient_name", nullable = false, length = 255)
     private String recipientName;
 
-    @Column(name = "ship-address-1", nullable = false, length = 255)
+    @Column(name = "ship_address_1", nullable = false, length = 255)
     private String shipAddress1;
 
-    @Column(name = "ship-address-2", length = 255)
+    @Column(name = "ship_address_2", length = 255)
     private String shipAddress2;
 
-    @Column(name = "ship-address-3", length = 255)
+    @Column(name = "ship_address_3", length = 255)
     private String shipAddress3;
 
-    @Column(name = "ship-city", nullable = false, length = 30)
+    @Column(name = "ship_city", nullable = false, length = 30)
     private String shipCity;
 
-    @Column(name = "ship-state", nullable = false, length = 30)
+    @Column(name = "ship_state", nullable = false, length = 30)
     private String shipState;
 
-    @Column(name = "ship-postal-code", nullable = false, length = 30)
+    @Column(name = "ship_postal_code", nullable = false, length = 30)
     private String shipPostalCode;
 
-    @Column(name = "ship-country", nullable = false, length = 30)
+    @Column(name = "ship_country", nullable = false, length = 30)
     private String shipCountry;
 
-    @Column(name = "ioss-number", nullable = false, length = 30)
+    @Column(name = "ioss_number", nullable = false, length = 30)
     private String iossNumber;
 
 }

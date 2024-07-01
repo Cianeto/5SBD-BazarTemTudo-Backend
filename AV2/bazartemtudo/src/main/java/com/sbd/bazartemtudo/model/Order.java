@@ -27,7 +27,7 @@ import com.sbd.bazartemtudo.enums.OrderStatus;
 public class Order {
 
     @Id
-    @Column(name = "id", nullable = false, length = 30)
+    @Column(name = "order_id", nullable = false, length = 30)
     private String id;
 
     @Column(name = "purchase_date", nullable = false)
