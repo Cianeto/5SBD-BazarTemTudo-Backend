@@ -1,4 +1,4 @@
-package com.bazartemtudo.bazartemtudo.model;
+package com.sbd.bazartemtudo.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

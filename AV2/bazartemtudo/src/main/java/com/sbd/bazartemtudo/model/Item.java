@@ -1,4 +1,6 @@
-package com.bazartemtudo.bazartemtudo.model;
+package com.sbd.bazartemtudo.model;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,28 +15,25 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_customers")
+@Table(name = "tb_items")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Getter
 @Setter
-public class Customer {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id")
-    private Integer customerId;
+    @Column(name = "item_id")
+    private Integer itemId;
+
+    @Column(nullable = false, length = 32)
+    private String sku;
 
     @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(length = 18)
-    private String phone;
-
-    @Column(unique = true, nullable = false, length = 255)
-    private String email;
-
-    @Column(unique = true, nullable = false, length = 14)
-    private String cpf;
-
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer inventory = 0;
 }
