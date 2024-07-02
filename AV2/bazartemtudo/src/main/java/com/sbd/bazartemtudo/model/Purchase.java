@@ -1,5 +1,7 @@
 package com.sbd.bazartemtudo.model;
 
+import com.sbd.bazartemtudo.enums.PurchaseStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,8 +9,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,18 +19,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "tb_purchase", uniqueConstraints = {@UniqueConstraint(columnNames = {"order_id", "item_id"})})
+@Table(name = "tb_purchase")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Getter
 @Setter
 public class Purchase {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private int id;
+    @Column(name = "purchase_id", nullable = false)
+    private int purchaseId;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
@@ -36,14 +38,12 @@ public class Purchase {
     @Column(columnDefinition = "ENUM('PENDING', 'RECEIVED')", nullable = false)
     private PurchaseStatus status;
 
-    @Column(name = "order_id", nullable = false, length = 30)
-    private String orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-    @Column(name = "item_id", nullable = false, length = 32)
-    private String itemId;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
 
-}
-
-enum PurchaseStatus {
-    PENDING, RECEIVED
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.sbd.bazartemtudo.enums.OrderStatus;
 
@@ -30,7 +33,7 @@ public class Order {
 
     @Id
     @Column(name = "order_id", nullable = false, length = 30)
-    private String id;
+    private String orderId;
 
     @Column(name = "purchase_date", nullable = false)
     private Date purchaseDate;
@@ -51,5 +54,11 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
-    
+
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
+
+    @OneToMany(mappedBy = "order")
+    private List<Purchase> purchases = new ArrayList<Purchase>();
+
 }
