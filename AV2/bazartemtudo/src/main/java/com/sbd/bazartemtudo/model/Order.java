@@ -23,7 +23,7 @@ import java.util.List;
 import com.sbd.bazartemtudo.enums.OrderStatus;
 
 @Entity
-@Table(name = "tb_orders")
+@Table(name = "tb_order")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
