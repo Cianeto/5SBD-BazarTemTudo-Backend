@@ -61,4 +61,6 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<Purchase> purchases = new ArrayList<Purchase>();
 
+    
+
 }

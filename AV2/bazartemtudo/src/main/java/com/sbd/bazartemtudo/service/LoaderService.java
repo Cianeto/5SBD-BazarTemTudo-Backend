@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbd.bazartemtudo.model.Customer;
+import com.sbd.bazartemtudo.model.Item;
 import com.sbd.bazartemtudo.model.Load;
+import com.sbd.bazartemtudo.model.Order;
 import com.sbd.bazartemtudo.repository.CustomerRepo;
 import com.sbd.bazartemtudo.repository.ItemRepo;
 import com.sbd.bazartemtudo.repository.LoadRepo;
@@ -30,9 +32,23 @@ public class LoaderService {
     public String transferLoadToTables(){
         List<Load> loads = loadRepo.findAll();
         for(Load load : loads){
+
             Optional<Customer> customer = customerRepo.findByCpf(load.getCpf());
-            if(customer.empty()){
-                Optional<Customer> customer = customerRepo.findByEmail(load.getCpf());
+            if(customer.isEmpty()){
+                customer = customerRepo.findByEmail(load.getCpf());
+                if(customer.isEmpty()){
+                    customerRepo.save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(), load.getBuyerEmail(), load.getCpf()));
+                }
+            }
+
+            Optional<Item> item = itemRepo.findBySku(load.getSku());
+            if(item.isEmpty()){
+                itemRepo.save(new Item(load.getSku(), load.getProductName()));
+            }
+
+            Optional<Order> order = orderRepo.findById(load.getOrderId());
+            if(order.isEmpty()){
+                orderRepo.save(new Order());
             }
         }
     }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.sbd.bazartemtudo.model.Order;
 
 @Repository
-public interface OrderRepo extends JpaRepository<Order, Integer>{
+public interface OrderRepo extends JpaRepository<Order, String>{
     
+    
+
 }

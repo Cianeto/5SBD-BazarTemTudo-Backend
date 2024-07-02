@@ -38,4 +38,8 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<Purchase> purchases = new ArrayList<Purchase>();
 
+    public Item(String sku, String name) {
+        this.sku = sku;
+        this.name = name;
+    }
 }

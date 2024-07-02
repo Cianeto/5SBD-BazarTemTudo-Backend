@@ -11,5 +11,6 @@ import com.sbd.bazartemtudo.model.Customer;
 public interface CustomerRepo extends JpaRepository<Customer, Integer>{
 
     Optional<Customer> findByCpf(String cpf);
+    Optional<Customer> findByEmail(String email);
 
 }
