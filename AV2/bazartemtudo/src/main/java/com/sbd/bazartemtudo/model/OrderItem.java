@@ -23,7 +23,7 @@ import lombok.ToString;
 @Setter
 public class OrderItem {
     @Id
-    @Column(name = "orderitem_id", nullable = false, length = 30)
+    @Column(name = "id", nullable = false, length = 30)
     private String orderItemId;
 
     @Column(name = "quantity", nullable = false)
