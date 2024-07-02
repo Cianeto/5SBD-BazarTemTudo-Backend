@@ -12,4 +12,7 @@ public class ControllerTest {
     public String teste() {
         return "Olá mundo!";
     }
+
+
+    /* TRUNCATE tb_customer;*/
 }

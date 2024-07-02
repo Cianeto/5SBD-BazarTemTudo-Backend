@@ -24,6 +24,7 @@ public class LoadControl {
     @PostMapping("/insert")
     @Transactional
     public String insertLoad(@RequestBody List<Load> loads) {
+        System.out.println(loads);
         try {
             loadRepo.saveAll(loads);
             return "Data inserted successfully";
@@ -32,4 +33,5 @@ public class LoadControl {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error inserting data", e);
         }
     }
+    
 }
