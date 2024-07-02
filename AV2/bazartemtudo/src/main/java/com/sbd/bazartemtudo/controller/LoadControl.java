@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -22,16 +24,13 @@ public class LoadControl {
     private LoadRepo loadRepo;
 
     @PostMapping("/insert")
-    @Transactional
-    public String insertLoad(@RequestBody List<Load> loads) {
-        System.out.println(loads);
+    public ResponseEntity<?> insertLoad(@RequestBody List<Load> loads) {
         try {
             loadRepo.saveAll(loads);
-            return "Data inserted successfully";
-        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Data inserted successfully.");
+        } catch (DataAccessException e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error inserting data", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Data insert failed.");
         }
     }
-    
 }
