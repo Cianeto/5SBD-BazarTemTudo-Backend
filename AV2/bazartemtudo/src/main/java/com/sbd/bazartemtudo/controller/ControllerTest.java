@@ -7,8 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.sbd.bazartemtudo.dto.PurchaseUpdateRequest;
 
 @RestController
 @RequestMapping("/test")
@@ -46,12 +49,17 @@ public class ControllerTest {
     }
 
     @PutMapping("/updatePurchases")
-    public ResponseEntity<?> updatePurchases() {
+    public ResponseEntity<?> updatePurchases(@RequestBody PurchaseUpdateRequest request) {
         try {
-            jdbcTemplate.execute("CALL order_UpdateOrderAndItemInventory()");
+            String query = "CALL purchase_UpdatePurchaseAndOrderManually(?, ?)";
+
+            jdbcTemplate.update(query, request.idOrder(), request.idItem());
+
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Stored Procedure order_UpdateOrderAndItemInventory() called.");
-        } catch (DataAccessException e) {
+                    .body("Stored Procedure purchase_UpdatePurchaseAndOrderManually(?, ?) called with idOrder: "
+                            + request.idOrder() + " and idItem: " + request.idItem() + ".");
+                            
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Stored Procedure call failed.");
         }
