@@ -12,6 +12,4 @@ public class CustomerControl {
     
     @Autowired
     private CustomerRepo customerRepo;
-
-
 }
