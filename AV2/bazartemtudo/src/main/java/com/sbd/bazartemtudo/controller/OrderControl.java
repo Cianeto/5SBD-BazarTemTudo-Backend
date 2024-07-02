@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sbd.bazartemtudo.repository.OrderRepo;
+import com.sbd.bazartemtudo.repository.CustomerRepo;
 
 @RestController
-@RequestMapping("/order-control")
+@RequestMapping("/customer-control")
 public class OrderControl {
     
     @Autowired
-    private OrderRepo orderRepo;
+    private CustomerRepo customerRepo;
 }

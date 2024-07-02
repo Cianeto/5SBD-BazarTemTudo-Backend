@@ -44,4 +44,10 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<Order>();
 
+    public Customer(String name, String phone, String email, String cpf) {
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.cpf = cpf;
+    }
 }
