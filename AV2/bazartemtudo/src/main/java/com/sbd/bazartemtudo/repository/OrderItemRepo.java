@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.sbd.bazartemtudo.model.OrderItem;
 
 @Repository
-public interface OrderItemRepo extends JpaRepository<OrderItem, Integer>{
+public interface OrderItemRepo extends JpaRepository<OrderItem, String>{
     
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.sbd.bazartemtudo.model.Item;
 
 @Repository
-public interface ItemRepo extends JpaRepository<Item, Integer>{
+public interface ItemRepo extends JpaRepository<Item, String>{
     
     Optional<Item> findBySku(String sku);
 

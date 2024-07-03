@@ -10,6 +10,7 @@ import com.sbd.bazartemtudo.model.Customer;
 import com.sbd.bazartemtudo.model.Item;
 import com.sbd.bazartemtudo.model.Load;
 import com.sbd.bazartemtudo.model.Order;
+import com.sbd.bazartemtudo.model.OrderItem;
 import com.sbd.bazartemtudo.repository.CustomerRepo;
 import com.sbd.bazartemtudo.repository.ItemRepo;
 import com.sbd.bazartemtudo.repository.LoadRepo;
@@ -27,7 +28,7 @@ public class LoaderService {
     @Autowired
     private ItemRepo itemRepo;
     @Autowired
-    private OrderItemRepo itemOrderRepo;
+    private OrderItemRepo orderItemRepo;
 
     public String transferLoadToTables(){
         List<Load> loads = loadRepo.findAll();
@@ -48,7 +49,12 @@ public class LoaderService {
 
             Optional<Order> order = orderRepo.findById(load.getOrderId());
             if(order.isEmpty()){
-                orderRepo.save(new Order());
+                orderRepo.save(new Order()); // falta preencher ali
+            }
+
+            Optional<OrderItem> orderItem = orderItemRepo.findById(load.getOrderItemId());
+            if(orderItem.isEmpty()){
+                orderItemRepo.save(new OrderItem()); // falta preencher ali
             }
         }
     }
