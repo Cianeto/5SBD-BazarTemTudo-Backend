@@ -3,13 +3,12 @@ package com.sbd.bazartemtudo.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sbd.bazartemtudo.enums.OrderStatus;
 import com.sbd.bazartemtudo.enums.PurchaseStatus;
+import com.sbd.bazartemtudo.model.Item;
 import com.sbd.bazartemtudo.model.Order;
 import com.sbd.bazartemtudo.model.OrderItem;
 import com.sbd.bazartemtudo.model.Purchase;
@@ -54,6 +53,13 @@ public class ProcessService {
             for (OrderItem orderItem : orderItems) {
                 Purchase purchase = purchaseRepo.findByOrderItem(orderItem).orElse(null);
                 if (purchase != null && purchase.getStatus().equals(PurchaseStatus.PENDING)) {
+
+                    Item item = itemRepo.findById(orderItem.getItem().getSku()).get();
+
+                    item.setInventory(item.getInventory() + purchase.getQuantity());
+
+                    itemRepo.save(item);
+
                     purchase.setStatus(PurchaseStatus.RECEIVED);
                     purchaseRepo.save(purchase);
                     break;
@@ -62,24 +68,38 @@ public class ProcessService {
         }
     }
 
-    /*
-     * public void unqueuePurchase(){
-     * List<Order> orders =
-     * orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
-     * for(Order order : orders){
-     * List<OrderItem> orderItems =
-     * orderItemRepo.findByOrderOrderByPriceDesc(order);
-     * for (OrderItem orderItem : orderItems) {
-     * Purchase purchase = purchaseRepo.findByOrderItem(orderItem).orElse(null);
-     * if(purchase != null && purchase.getStatus().equals(PurchaseStatus.PENDING)){
-     * purchase.setStatus(PurchaseStatus.RECEIVED);
-     * purchaseRepo.save(purchase);
-     * break;
-     * }
-     * }
-     * }
-     * }
-     */
+    public void unqueueOrder() {
+        List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
+        for (Order order : orders) {
+            List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
+            boolean allItemsAvailable = true;
+            for (OrderItem orderItem : orderItems) {
+                Item item = itemRepo.findById(orderItem.getItem().getSku()).get();
+                if (item.getInventory() - orderItem.getQuantity() < 0) {
+                    allItemsAvailable = false;
+                    break;
+                }
+            }
+            if (allItemsAvailable) {
+                order.setStatus(OrderStatus.SENT);
+                orderRepo.save(order);
+                break;
+            }
+        }
+    }
+
+    public String updateItemInventory(String sku, Integer addInventory) {
+        Optional<Item> itemOptional = itemRepo.findById(sku);
+        if (itemOptional.isPresent()) {
+            Item item = itemOptional.get();
+            item.setInventory(item.getInventory() + addInventory);
+            itemRepo.save(item);
+
+            return "Inventory updated successfully.";
+        } else {
+            return "Item with SKU " + sku + " not found.";
+        }
+    }
 
 }
 // CRIAR PEDIDOS DE COMPRA
