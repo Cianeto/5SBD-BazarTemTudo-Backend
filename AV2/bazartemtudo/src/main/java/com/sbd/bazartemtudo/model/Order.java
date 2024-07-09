@@ -41,9 +41,6 @@ public class Order {
     @Column(name = "payment_date", nullable = false)
     private Date paymentDate;
 
-    @Column(name = "currency", nullable = false, length = 3, columnDefinition = "CHAR(3) DEFAULT 'BRL'")
-    private String currency;
-
     @Column(name = "price_sum", nullable = false, precision = 10, scale = 2)
     private BigDecimal priceSum;
 

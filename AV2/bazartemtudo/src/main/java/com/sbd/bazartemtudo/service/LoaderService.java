@@ -1,11 +1,13 @@
 package com.sbd.bazartemtudo.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sbd.bazartemtudo.enums.OrderStatus;
 import com.sbd.bazartemtudo.model.Customer;
 import com.sbd.bazartemtudo.model.Item;
 import com.sbd.bazartemtudo.model.Load;
@@ -49,7 +51,7 @@ public class LoaderService {
 
             Optional<Order> order = orderRepo.findById(load.getOrderId());
             if(order.isEmpty()){
-                orderRepo.save(new Order()); // falta preencher ali
+                orderRepo.save(new Order(load.getOrderId(), load.getPurchaseDate(), load.getPaymentsDate(), /*price-sum*/, OrderStatus.PENDING, customerRepo.findByCpf(load.getCpf()).getCustomerId()); // falta preencher ali
             }
 
             Optional<OrderItem> orderItem = orderItemRepo.findById(load.getOrderItemId());
@@ -57,6 +59,18 @@ public class LoaderService {
                 orderItemRepo.save(new OrderItem()); // falta preencher ali
             }
         }
+    }
+
+    public Double calcPriceSum(String orderId){
+        Double pricesum = 0.0;
+
+        List<Load> loads = loadRepo.findAll();
+        for(Load load : loads){
+            if(load.getOrderId() == orderId){
+
+            }
+        }
+        return pricesum;
     }
 
 }
