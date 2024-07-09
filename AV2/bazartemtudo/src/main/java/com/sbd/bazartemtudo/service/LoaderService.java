@@ -1,6 +1,9 @@
 package com.sbd.bazartemtudo.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,45 +35,50 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
-    public String transferLoadToTables(){
+    public String transferLoadToTables() {
         List<Load> loads = loadRepo.findAll();
-        for(Load load : loads){
+        for (Load load : loads) {
 
-            Optional<Customer> customer = customerRepo.findByCpf(load.getCpf());
-            if(customer.isEmpty()){
-                customer = customerRepo.findByEmail(load.getCpf());
-                if(customer.isEmpty()){
-                    customerRepo.save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(), load.getBuyerEmail(), load.getCpf()));
-                }
-            }
+            Customer customer = customerRepo.findByCpf(load.getCpf())
+                    .orElseGet(() -> customerRepo.findByEmail(load.getBuyerEmail())
+                            .orElse(customerRepo.save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(),
+                                    load.getBuyerEmail(), load.getCpf()))));
 
-            Optional<Item> item = itemRepo.findBySku(load.getSku());
-            if(item.isEmpty()){
-                itemRepo.save(new Item(load.getSku(), load.getProductName()));
-            }
+            Item item = itemRepo.findBySku(load.getSku())
+                    .orElse(itemRepo.save(new Item(load.getSku(), load.getProductName())));
 
-            Optional<Order> order = orderRepo.findById(load.getOrderId());
-            if(order.isEmpty()){
-                orderRepo.save(new Order(load.getOrderId(), load.getPurchaseDate(), load.getPaymentsDate(), /*price-sum*/, OrderStatus.PENDING, customerRepo.findByCpf(load.getCpf()).getCustomerId()); // falta preencher ali
-            }
+            Order order = orderRepo.findById(load.getOrderId())
+                    .orElse(orderRepo.save(new Order(load.getOrderId(), convertStringToDate(load.getPurchaseDate()),
+                            convertStringToDate(load.getPaymentsDate()),
+                            calcPriceSum(load.getOrderId()), OrderStatus.PENDING, customer)));
 
-            Optional<OrderItem> orderItem = orderItemRepo.findById(load.getOrderItemId());
-            if(orderItem.isEmpty()){
-                orderItemRepo.save(new OrderItem()); // falta preencher ali
-            }
+            OrderItem orderItem = orderItemRepo.findById(load.getOrderItemId()).orElse(orderItemRepo.save());
+            
+
         }
+        return "Load transfer completed";
     }
 
-    public Double calcPriceSum(String orderId){
+    public Double calcPriceSum(String orderId) {
         Double pricesum = 0.0;
 
         List<Load> loads = loadRepo.findAll();
-        for(Load load : loads){
-            if(load.getOrderId() == orderId){
-
+        for (Load load : loads) {
+            if (load.getOrderId().equals(orderId)) {
+                pricesum += load.getItemPrice() * load.getQuantityPurchased();
             }
         }
+
         return pricesum;
     }
 
+    private Date convertStringToDate(String dateString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            return formatter.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

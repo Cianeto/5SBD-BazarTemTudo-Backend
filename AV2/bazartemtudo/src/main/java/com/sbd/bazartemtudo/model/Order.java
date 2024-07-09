@@ -42,7 +42,7 @@ public class Order {
     private Date paymentDate;
 
     @Column(name = "price_sum", nullable = false, precision = 10, scale = 2)
-    private BigDecimal priceSum;
+    private Double priceSum;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'SENT') DEFAULT 'PENDING'")
@@ -57,4 +57,14 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<Purchase> purchases = new ArrayList<Purchase>();
+
+    public Order(String orderId, Date purchaseDate, Date paymentDate, Double priceSum,
+            OrderStatus status, Customer customer) {
+        this.orderId = orderId;
+        this.purchaseDate = purchaseDate;
+        this.paymentDate = paymentDate;
+        this.priceSum = priceSum;
+        this.status = status;
+        this.customer = customer;
+    }
 }

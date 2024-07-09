@@ -64,7 +64,7 @@ public class Load {
     private String currency;
 
     @Column(name = "item-price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal itemPrice;
+    private Double itemPrice;
 
     @Column(name = "ship-service-level", nullable = false, length = 20)
     private String shipServiceLevel;
