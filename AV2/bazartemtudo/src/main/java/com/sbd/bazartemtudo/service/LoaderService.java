@@ -35,7 +35,7 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 10000) // EXECUTA AUTOMATICAMENTE A CADA 10 SEGUNDOS
     public void transferLoadToTables() { // REPASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {
