@@ -2,6 +2,7 @@ package com.sbd.bazartemtudo.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -32,7 +33,7 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private Double price;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_orderitem_order"))
@@ -42,7 +43,14 @@ public class OrderItem {
     @JoinColumn(name = "item_id", nullable = false, foreignKey = @ForeignKey(name = "fk_orderitem_item"))
     private Item item;
 
-    @OneToOne(mappedBy = "orderItem")
+    @OneToOne(mappedBy = "orderItem", cascade = CascadeType.ALL)
     private Purchase purchase;
 
+    public OrderItem(String orderItemId, Integer quantity, BigDecimal price, Order order, Item item) {
+        this.orderItemId = orderItemId;
+        this.quantity = quantity;
+        this.price = price;
+        this.order = order;
+        this.item = item;
+    }
 }

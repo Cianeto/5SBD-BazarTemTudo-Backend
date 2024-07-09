@@ -1,5 +1,7 @@
 package com.sbd.bazartemtudo.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,8 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "tb_loader")
@@ -64,7 +64,7 @@ public class Load {
     private String currency;
 
     @Column(name = "item-price", nullable = false, precision = 10, scale = 2)
-    private Double itemPrice;
+    private BigDecimal itemPrice;
 
     @Column(name = "ship-service-level", nullable = false, length = 20)
     private String shipServiceLevel;

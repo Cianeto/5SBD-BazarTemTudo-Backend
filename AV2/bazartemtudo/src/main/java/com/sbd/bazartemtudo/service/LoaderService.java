@@ -1,5 +1,6 @@
 package com.sbd.bazartemtudo.service;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
-    public String transferLoadToTables() {
+    public String transferLoadToTables() { // PASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {
 
@@ -57,20 +58,20 @@ public class LoaderService {
         return "Load transfer completed.";
     }
 
-    public Double calcPriceSum(String orderId) {
+    public BigDecimal calcPriceSum(String orderId) { // CALCULAR PREÇO TOTAL DO PEDIDO
         Double pricesum = 0.0;
 
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {
             if (load.getOrderId().equals(orderId)) {
-                pricesum += load.getItemPrice() * load.getQuantityPurchased();
+                pricesum += load.getItemPrice().doubleValue() * load.getQuantityPurchased();
             }
         }
-
-        return pricesum;
+        
+        return BigDecimal.valueOf(pricesum);
     }
 
-    public Date convertStringToDate(String dateString) {
+    public Date convertStringToDate(String dateString) { // CONVERTER STRING PARA O TIPO DATE
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
         try {
             return formatter.parse(dateString);

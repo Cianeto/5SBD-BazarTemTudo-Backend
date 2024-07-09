@@ -3,6 +3,7 @@ package com.sbd.bazartemtudo.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Item {
     @Column(nullable = false, columnDefinition = "int DEFAULT 0")
     private Integer inventory = 0;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     /* @OneToMany(mappedBy = "item")

@@ -1,5 +1,6 @@
 package com.sbd.bazartemtudo.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,7 +44,7 @@ public class Order {
     private Date paymentDate;
 
     @Column(name = "price_sum", nullable = false, precision = 10, scale = 2)
-    private Double priceSum;
+    private BigDecimal priceSum;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'SENT') DEFAULT 'PENDING'")
@@ -53,13 +54,13 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_customer"))
     private Customer customer;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
     /* @OneToMany(mappedBy = "order")
     private List<Purchase> purchases = new ArrayList<Purchase>(); */
 
-    public Order(String orderId, Date purchaseDate, Date paymentDate, Double priceSum,
+    public Order(String orderId, Date purchaseDate, Date paymentDate, BigDecimal priceSum,
             OrderStatus status, Customer customer) {
         this.orderId = orderId;
         this.purchaseDate = purchaseDate;

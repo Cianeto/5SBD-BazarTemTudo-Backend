@@ -40,7 +40,7 @@ public class Purchase {
     private PurchaseStatus status;
 
     @OneToOne
-    @JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_purchase_orderitem"))
+    @JoinColumn(name = "order_item_id", nullable = false, foreignKey = @ForeignKey(name = "fk_purchase_orderitem"))
     private OrderItem orderItem;
 
     /* @ManyToOne
