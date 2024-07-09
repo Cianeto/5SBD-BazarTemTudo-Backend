@@ -55,7 +55,7 @@ public class LoaderControl {
     }
 
     @DeleteMapping("delete-loads")
-    @Operation(summary = "Truncate tb_loader table")
+    @Operation(summary = "Truncate tb_loader.")
     public ResponseEntity<?> template() {
         try {
 

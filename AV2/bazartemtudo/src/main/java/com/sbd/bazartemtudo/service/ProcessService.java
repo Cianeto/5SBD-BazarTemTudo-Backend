@@ -70,34 +70,6 @@ public class ProcessService {
         }
     }
 
-    /* public void unqueueOrder() {
-        try {
-            List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
-            int processedOrders = 0;
-            for (Order order : orders) {
-                if (processedOrders >= 10) { // Limit the number of orders processed to prevent potential stack overflow
-                    break;
-                }
-                List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
-                boolean allItemsAvailable = true;
-                for (OrderItem orderItem : orderItems) {
-                    Optional<Item> itemOptional = itemRepo.findById(orderItem.getItem().getSku());
-                    if (!itemOptional.isPresent() || itemOptional.get().getInventory() - orderItem.getQuantity() < 0) {
-                        allItemsAvailable = false;
-                        break;
-                    }
-                }
-                if (allItemsAvailable) {
-                    order.setStatus(OrderStatus.SENT);
-                    orderRepo.save(order);
-                    processedOrders++;
-                }
-            }
-        } catch (Exception e) {
-            logger.error("Error processing orders", e);
-        }
-    } */
-
     public void unqueueOrder() {
         try {
             List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);

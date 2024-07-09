@@ -3,6 +3,7 @@ package com.sbd.bazartemtudo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,8 @@ public class ProcessControl {
     private ProcessService procServ;
 
     @PostMapping("/auto-create-purchases")
-    @Operation(summary = "")
-    public ResponseEntity<?> insertPurchases(){
+    @Operation(summary = "Automatically create purchases for items lacking in inventory upon request.")
+    public ResponseEntity<?> insertPurchases() {
         try {
 
             procServ.processPendingOrdersByPriceSum();
@@ -34,7 +35,8 @@ public class ProcessControl {
 
     @PutMapping("/auto-update-purchase&inventory")
     @Operation(summary = "")
-    public ResponseEntity<?> unqueuePurchase(){ // REALIZA A COMPRA DO ITEMPEDIDO INDIVIDUALMENTE MAIS CARO DO PEDIDO MAIS CARO
+    public ResponseEntity<?> updatePurchase() { // REALIZA A COMPRA DO ITEMPEDIDO INDIVIDUALMENTE MAIS CARO DO PEDIDO
+                                                // MAIS CARO
         try {
 
             procServ.unqueuePurchase();
@@ -48,28 +50,29 @@ public class ProcessControl {
 
     @PutMapping("/auto-update-order")
     @Operation(summary = "")
-    public ResponseEntity<?> unqueueOrder(){
+    public ResponseEntity<?> updateOrder() {
         try {
 
-            unqueueOrder();
+            procServ.unqueueOrder();
 
-            return ResponseEntity.status(HttpStatus.OK).body(" successful.");
+            return ResponseEntity.status(HttpStatus.OK).body("order updated successfuly.");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" failed.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("order update failed.");
         }
     }
 
-    /*
-    @
-    @Operation(summary = "")
-    public ResponseEntity<?> template(){
+    @PutMapping("/update-inventory/{sku}/{addInventory}")
+    @Operation(summary = "Update the inventory for a specific item.")
+    public ResponseEntity<?> updateInventory(@PathVariable String sku, @PathVariable Integer addInventory) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(" successful.");
+            String result = procServ.updateItemInventory(sku, addInventory);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+            
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" failed.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory update failed.");
         }
-    } */
-    
+    }
 }
