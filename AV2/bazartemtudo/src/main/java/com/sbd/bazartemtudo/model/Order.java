@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -49,14 +50,14 @@ public class Order {
     private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_customer"))
     private Customer customer;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
-    @OneToMany(mappedBy = "order")
-    private List<Purchase> purchases = new ArrayList<Purchase>();
+    /* @OneToMany(mappedBy = "order")
+    private List<Purchase> purchases = new ArrayList<Purchase>(); */
 
     public Order(String orderId, Date purchaseDate, Date paymentDate, Double priceSum,
             OrderStatus status, Customer customer) {

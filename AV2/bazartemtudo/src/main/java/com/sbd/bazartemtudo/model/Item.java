@@ -35,8 +35,8 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
-    @OneToMany(mappedBy = "item")
-    private List<Purchase> purchases = new ArrayList<Purchase>();
+    /* @OneToMany(mappedBy = "item")
+    private List<Purchase> purchases = new ArrayList<Purchase>(); */
 
     public Item(String sku, String name) {
         this.sku = sku;

@@ -54,7 +54,7 @@ public class LoaderService {
             
 
         }
-        return "Load transfer completed";
+        return "Load transfer completed.";
     }
 
     public Double calcPriceSum(String orderId) {
