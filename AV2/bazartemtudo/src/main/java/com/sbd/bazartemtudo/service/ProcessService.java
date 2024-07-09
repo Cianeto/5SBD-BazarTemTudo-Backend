@@ -30,7 +30,9 @@ public class ProcessService {
 
     public void processPendingOrdersByPriceSum() { // VERIFICAR SE PEDIDOS ESTÃO INCOMPLETOS (FALTANDO ESTOQUE)
 
-        List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
+        List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING); // CRIAR PEDIDOS DE COMPRA
+                                                                                             // EM ORDEM DECRESCENTE
+                                                                                             // (VALOR TOTAL DO PEDIDO)
         for (Order order : orders) {
             List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
             for (OrderItem orderItem : orderItems) {
@@ -38,7 +40,7 @@ public class ProcessService {
                         - orderItem.getQuantity() < 0) { // NÃO HÁ ESTOQUE SUFICIENTE?
 
                     purchaseRepo.findByOrderItem(orderItem) // VERIFICAR SE JÁ EXISTE PEDIDO DE COMPRA COM FK ORDERITEM
-                            .orElse(purchaseRepo
+                            .orElseGet(() -> purchaseRepo
                                     .save(new Purchase(orderItem.getQuantity(), PurchaseStatus.PENDING, orderItem)));
 
                 }
@@ -68,23 +70,55 @@ public class ProcessService {
         }
     }
 
-    public void unqueueOrder() {
-        List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
-        for (Order order : orders) {
-            List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
-            boolean allItemsAvailable = true;
-            for (OrderItem orderItem : orderItems) {
-                Item item = itemRepo.findById(orderItem.getItem().getSku()).get();
-                if (item.getInventory() - orderItem.getQuantity() < 0) {
-                    allItemsAvailable = false;
+    /* public void unqueueOrder() {
+        try {
+            List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
+            int processedOrders = 0;
+            for (Order order : orders) {
+                if (processedOrders >= 10) { // Limit the number of orders processed to prevent potential stack overflow
                     break;
                 }
+                List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
+                boolean allItemsAvailable = true;
+                for (OrderItem orderItem : orderItems) {
+                    Optional<Item> itemOptional = itemRepo.findById(orderItem.getItem().getSku());
+                    if (!itemOptional.isPresent() || itemOptional.get().getInventory() - orderItem.getQuantity() < 0) {
+                        allItemsAvailable = false;
+                        break;
+                    }
+                }
+                if (allItemsAvailable) {
+                    order.setStatus(OrderStatus.SENT);
+                    orderRepo.save(order);
+                    processedOrders++;
+                }
             }
-            if (allItemsAvailable) {
-                order.setStatus(OrderStatus.SENT);
-                orderRepo.save(order);
-                break;
+        } catch (Exception e) {
+            logger.error("Error processing orders", e);
+        }
+    } */
+
+    public void unqueueOrder() {
+        try {
+            List<Order> orders = orderRepo.findByStatusOrderByPriceSumDesc(OrderStatus.PENDING);
+            for (Order order : orders) {
+                List<OrderItem> orderItems = orderItemRepo.findByOrder(order);
+                boolean allItemsAvailable = true;
+                for (OrderItem orderItem : orderItems) {
+                    Optional<Item> itemOptional = itemRepo.findById(orderItem.getItem().getSku());
+                    if (!itemOptional.isPresent() || itemOptional.get().getInventory() - orderItem.getQuantity() < 0) {
+                        allItemsAvailable = false;
+                        break;
+                    }
+                }
+                if (allItemsAvailable) {
+                    order.setStatus(OrderStatus.SENT);
+                    orderRepo.save(order);
+                    return;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -102,6 +136,3 @@ public class ProcessService {
     }
 
 }
-// CRIAR PEDIDOS DE COMPRA
-// EM ORDEM DECRESCENTE
-// (VALOR TOTAL DO PEDIDO)

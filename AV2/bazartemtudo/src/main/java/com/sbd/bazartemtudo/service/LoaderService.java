@@ -40,20 +40,23 @@ public class LoaderService {
 
             Customer customer = customerRepo.findByCpf(load.getCpf())
                     .orElseGet(() -> customerRepo.findByEmail(load.getBuyerEmail())
-                            .orElse(customerRepo.save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(),
-                                    load.getBuyerEmail(), load.getCpf()))));
+                            .orElseGet(() -> customerRepo
+                                    .save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(),
+                                            load.getBuyerEmail(), load.getCpf()))));
 
             Item item = itemRepo.findById(load.getSku())
-                    .orElse(itemRepo.save(new Item(load.getSku(), load.getProductName())));
+                    .orElseGet(() -> itemRepo.save(new Item(load.getSku(), load.getProductName())));
 
             Order order = orderRepo.findById(load.getOrderId())
-                    .orElse(orderRepo.save(new Order(load.getOrderId(), convertStringToDate(load.getPurchaseDate()),
-                            convertStringToDate(load.getPaymentsDate()),
-                            calcPriceSum(load.getOrderId()), OrderStatus.PENDING, customer)));
+                    .orElseGet(() -> orderRepo
+                            .save(new Order(load.getOrderId(), convertStringToDate(load.getPurchaseDate()),
+                                    convertStringToDate(load.getPaymentsDate()),
+                                    calcPriceSum(load.getOrderId()), OrderStatus.PENDING, customer)));
 
             orderItemRepo.findById(load.getOrderItemId())
-                    .orElse(orderItemRepo.save(new OrderItem(load.getOrderItemId(), load.getQuantityPurchased(),
-                            load.getItemPrice(), order, item)));
+                    .orElseGet(
+                            () -> orderItemRepo.save(new OrderItem(load.getOrderItemId(), load.getQuantityPurchased(),
+                                    load.getItemPrice(), order, item)));
 
         }
     }
