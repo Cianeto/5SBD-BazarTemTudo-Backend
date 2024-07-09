@@ -34,7 +34,7 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
-    public String transferLoadToTables() { // REPASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
+    public void transferLoadToTables() { // REPASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {
 
@@ -56,7 +56,6 @@ public class LoaderService {
                             load.getItemPrice(), order, item)));
 
         }
-        return "Load transfer completed.";
     }
 
     public BigDecimal calcPriceSum(String orderId) { // CALCULAR PREÇO TOTAL DO PEDIDO

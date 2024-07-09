@@ -12,5 +12,6 @@ import com.sbd.bazartemtudo.model.OrderItem;
 public interface OrderItemRepo extends JpaRepository<OrderItem, String>{
     
     List<OrderItem> findByOrder(Order order);
+    List<OrderItem> findByOrderOrderByPriceDesc(Order order);
 
 }
