@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.sbd.bazartemtudo.enums.OrderStatus;
@@ -34,6 +35,7 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
+    @Scheduled(fixedDelay = 10000)
     public void transferLoadToTables() { // REPASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {

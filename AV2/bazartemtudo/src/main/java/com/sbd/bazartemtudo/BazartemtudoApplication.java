@@ -11,5 +11,5 @@ public class BazartemtudoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BazartemtudoApplication.class, args);
 	}
-
+	
 }
