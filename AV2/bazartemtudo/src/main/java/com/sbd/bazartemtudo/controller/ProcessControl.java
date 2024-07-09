@@ -34,7 +34,7 @@ public class ProcessControl {
     }
 
     @PutMapping("/auto-update-purchase&inventory")
-    @Operation(summary = "")
+    @Operation(summary = "Change purchase status to 'RECEIVED' and adds quantity purchased to inventory.")
     public ResponseEntity<?> updatePurchase() { // REALIZA A COMPRA DO ITEMPEDIDO INDIVIDUALMENTE MAIS CARO DO PEDIDO
                                                 // MAIS CARO
         try {
@@ -49,7 +49,7 @@ public class ProcessControl {
     }
 
     @PutMapping("/auto-update-order")
-    @Operation(summary = "")
+    @Operation(summary = "Change highest price_sum order status to 'SENT' if there is enough inventory.")
     public ResponseEntity<?> updateOrder() {
         try {
 
@@ -68,8 +68,7 @@ public class ProcessControl {
         try {
             String result = procServ.updateItemInventory(sku, addInventory);
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
-            
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Inventory update failed.");
