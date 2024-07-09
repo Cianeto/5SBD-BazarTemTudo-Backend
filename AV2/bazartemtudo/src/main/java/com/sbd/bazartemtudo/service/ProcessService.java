@@ -41,7 +41,9 @@ public class ProcessService {
 
                     purchaseRepo.findByOrderItem(orderItem) // VERIFICAR SE JÁ EXISTE PEDIDO DE COMPRA COM FK ORDERITEM
                             .orElseGet(() -> purchaseRepo
-                                    .save(new Purchase(orderItem.getQuantity(), PurchaseStatus.PENDING, orderItem)));
+                                    .save(new Purchase(orderItem.getQuantity()
+                                            - itemRepo.findById(orderItem.getItem().getSku()).get().getInventory(),
+                                            PurchaseStatus.PENDING, orderItem)));
 
                 }
             }
