@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sbd.bazartemtudo.model.Load;
 import com.sbd.bazartemtudo.repository.LoadRepo;
+import com.sbd.bazartemtudo.service.LoaderService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -21,9 +22,12 @@ public class LoaderControl {
     @Autowired
     private LoadRepo loadRepo;
 
+    @Autowired
+    private LoaderService loadServ;
+
     @PostMapping("insert-load")
     @Operation(summary = "import JSON into database.")
-    public ResponseEntity<?> insertLoad(@RequestBody List<Load> loads) {
+    public ResponseEntity<?> insertLoad(@RequestBody List<Load> loads) { // INSERIR CARGA NA TABELA tb_load E REPASSAR PARA AS DEMAIS TABELAS
         List<Load> allLoads = loadRepo.findAll();
         try {
             for (Load load : loads) {
@@ -38,6 +42,9 @@ public class LoaderControl {
                     loadRepo.save(load);
                 }
             }
+
+            loadServ.transferLoadToTables();
+
             return ResponseEntity.status(HttpStatus.CREATED).body("insert-load process successful.");
         } catch (Exception e) {
             e.printStackTrace();

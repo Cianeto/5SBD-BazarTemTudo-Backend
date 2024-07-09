@@ -34,7 +34,7 @@ public class LoaderService {
     @Autowired
     private OrderItemRepo orderItemRepo;
 
-    public String transferLoadToTables() { // PASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
+    public String transferLoadToTables() { // REPASSAR A TABELA CARGA PARA AS DEMAIS TABELAS
         List<Load> loads = loadRepo.findAll();
         for (Load load : loads) {
 
