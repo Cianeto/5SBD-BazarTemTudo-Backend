@@ -1,11 +1,9 @@
 package com.sbd.bazartemtudo.service;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +50,7 @@ public class LoaderService {
                             convertStringToDate(load.getPaymentsDate()),
                             calcPriceSum(load.getOrderId()), OrderStatus.PENDING, customer)));
 
-            OrderItem orderItem = orderItemRepo.findById(load.getOrderItemId()).orElse(orderItemRepo.save());
+            OrderItem orderItem = orderItemRepo.findById(load.getOrderItemId()).orElse(orderItemRepo.save(new OrderItem(load.getOrderItemId(), load.getQuantityPurchased(), load.getItemPrice(), order, item)));
             
 
         }
@@ -72,7 +70,7 @@ public class LoaderService {
         return pricesum;
     }
 
-    private Date convertStringToDate(String dateString) {
+    public Date convertStringToDate(String dateString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
         try {
             return formatter.parse(dateString);

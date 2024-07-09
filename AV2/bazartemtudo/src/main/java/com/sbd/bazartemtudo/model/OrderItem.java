@@ -30,7 +30,7 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
@@ -39,4 +39,6 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
+
+    
 }
