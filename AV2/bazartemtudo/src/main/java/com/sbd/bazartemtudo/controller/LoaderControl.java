@@ -25,7 +25,7 @@ public class LoaderControl {
     @Autowired
     private LoaderService loadServ;
 
-    @PostMapping("insert-load")
+    @PostMapping("/insert-load")
     @Operation(summary = "import JSON into database and populate other tables with each load.")
     public ResponseEntity<?> insertLoad(@RequestBody List<Load> loads) { // INSERIR CARGA NA TABELA tb_load E REPASSAR PARA AS DEMAIS TABELAS
         List<Load> allLoads = loadRepo.findAll();

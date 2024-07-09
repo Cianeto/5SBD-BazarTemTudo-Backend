@@ -30,10 +30,10 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int purchaseId;
+    private Integer purchaseId;
 
     @Column(name = "quantity", nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PENDING', 'RECEIVED')", nullable = false)
@@ -43,12 +43,10 @@ public class Purchase {
     @JoinColumn(name = "order_item_id", nullable = false, foreignKey = @ForeignKey(name = "fk_purchase_orderitem"))
     private OrderItem orderItem;
 
-    /* @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item; */
+    public Purchase(Integer quantity, PurchaseStatus status, OrderItem orderItem) {
+        this.quantity = quantity;
+        this.status = status;
+        this.orderItem = orderItem;
+    }
 
 }

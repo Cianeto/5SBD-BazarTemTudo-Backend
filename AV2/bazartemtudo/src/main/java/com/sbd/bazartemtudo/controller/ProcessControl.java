@@ -19,7 +19,7 @@ public class ProcessControl {
     public ResponseEntity<?> something(){
         try {
 
-            
+            procServ.processPendingOrdersByPriceSum();
 
             return ResponseEntity.status(HttpStatus.OK).body(" successful.");
         } catch (Exception e) {
