@@ -26,7 +26,7 @@ public class LoaderControl {
     private LoaderService loadServ;
 
     @PostMapping("insert-load")
-    @Operation(summary = "import JSON into database.")
+    @Operation(summary = "import JSON into database and populate other tables with each load.")
     public ResponseEntity<?> insertLoad(@RequestBody List<Load> loads) { // INSERIR CARGA NA TABELA tb_load E REPASSAR PARA AS DEMAIS TABELAS
         List<Load> allLoads = loadRepo.findAll();
         try {
@@ -51,4 +51,7 @@ public class LoaderControl {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("insert-load process failed.");
         }
     }
+
+    
+
 }

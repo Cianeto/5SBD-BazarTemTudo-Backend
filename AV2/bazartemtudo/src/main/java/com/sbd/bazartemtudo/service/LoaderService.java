@@ -43,7 +43,7 @@ public class LoaderService {
                             .orElse(customerRepo.save(new Customer(load.getBuyerName(), load.getBuyerPhoneNumber(),
                                     load.getBuyerEmail(), load.getCpf()))));
 
-            Item item = itemRepo.findBySku(load.getSku())
+            Item item = itemRepo.findById(load.getSku())
                     .orElse(itemRepo.save(new Item(load.getSku(), load.getProductName())));
 
             Order order = orderRepo.findById(load.getOrderId())
@@ -51,8 +51,9 @@ public class LoaderService {
                             convertStringToDate(load.getPaymentsDate()),
                             calcPriceSum(load.getOrderId()), OrderStatus.PENDING, customer)));
 
-            OrderItem orderItem = orderItemRepo.findById(load.getOrderItemId()).orElse(orderItemRepo.save(new OrderItem(load.getOrderItemId(), load.getQuantityPurchased(), load.getItemPrice(), order, item)));
-            
+            orderItemRepo.findById(load.getOrderItemId())
+                    .orElse(orderItemRepo.save(new OrderItem(load.getOrderItemId(), load.getQuantityPurchased(),
+                            load.getItemPrice(), order, item)));
 
         }
         return "Load transfer completed.";
@@ -67,7 +68,7 @@ public class LoaderService {
                 pricesum += load.getItemPrice().doubleValue() * load.getQuantityPurchased();
             }
         }
-        
+
         return BigDecimal.valueOf(pricesum);
     }
 
